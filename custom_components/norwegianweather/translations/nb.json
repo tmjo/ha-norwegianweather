@@ -1,21 +1,22 @@
 {
     "config": {
-        "title": "NorwegianTide",
+        "title": "NorwegianWeather",
         "step": {
             "user": {
-                "title": "NorwegianTide",
-                "description": "Hvis du trenger hjep til konfigurasjon ta en titt her: https://github.com/custom-components/NorwegianTide",
+                "title": "NorwegianWeather",
+                "description": "Hvis du trenger hjep til konfigurasjon ta en titt her: https://github.com/tmjo/ha-norwegianweather",
                 "data": {
-                    "username": "Brukernavn",
-                    "password": "Passord"
+                    "place": "Stedsnavn",
+                    "latitude": "Breddegrad",
+                    "longitude": "Lengdegrad"
                 }
             }
         },
         "error": {
-            "auth": "Brukernavn/Passord er feil."
+            "auth": "Lengdegrad/breddegrad er utenfor dekningsområdet til API."
         },
         "abort": {
-            "single_instance_allowed": "Du kan konfigurere NorwegianTide kun en gang."
+            "single_instance_allowed": "Du kan konfigurere integrasjonen kun en gang."
         }
     },
     "options": {
@@ -26,7 +27,14 @@
                     "sensor": "Sensor aktivert",
                     "switch": "Bryter aktivert"
                 }
-            }
+            },
+            "init": {
+                "title": "NorwegianWeather",
+                "description": "Alternativer",
+                "data": {
+                  "monitored_conditions": "Aktive enheter"
+                }
+              }
         }
     }
 }
