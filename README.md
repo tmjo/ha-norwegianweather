@@ -1,5 +1,5 @@
 # Norwegian Weather
-[![Buy Me A Coffee][https://img.shields.io/badge/support-buymeacoffee-222222.svg?style=flat-square]](https://www.buymeacoffee.com/tmjo)
+[![Buy Me A Coffee][buymeacoffee-image]][buymeacoffee-url]
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) ![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)
 
 This is a Home Assistant custom integration for Norwegian Weather which is interfacing an open API by the [MET Norway (The Norwegian Meteorological Institute)](https://met.no/en/), more precisely [api.met.no](https://api.met.no/).  **All data from MET Norway**. The service also provides data for geographical locations outside of Norway.
@@ -56,3 +56,9 @@ Please report issues on github. If you would like to contribute to development, 
 ## License
 MIT © [Tor Magne Johannessen][tmjo]. **All data from MET Norway**.
 
+<!-- Badges -->
+[hacs-url]: https://github.com/custom-components/hacs
+[hacs-image]: https://img.shields.io/badge/HACS-Custom-orange.svg
+[buymeacoffee-url]: https://www.buymeacoffee.com/tmjo
+[buymeacoffee-image]: https://img.shields.io/badge/support-buymeacoffee-222222.svg?style=flat-square
+[tmjo]: https://github.com/tmjo
