@@ -1,0 +1,13 @@
+{
+  "domain": "norwegianweather",
+  "name": "Norwegian Weather",
+  "version": "2021.3.1",
+  "documentation": "https://github.com/custom-components/NorwegianWeather",
+  "issue_tracker": "https://github.com/custom-components/NorwegianWeather/issues",
+  "dependencies": [],
+  "config_flow": true,
+  "codeowners": [
+    "@tmjo"
+  ],
+  "requirements": ["Pillow==8.1.0"]
+}

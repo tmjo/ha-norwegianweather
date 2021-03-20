@@ -1,0 +1,5 @@
+{
+  "name": "Norwegian Weather",
+  "domains": ["sensor", "binary_sensor"],
+  "homeassistant": "2021.1.1",
+}

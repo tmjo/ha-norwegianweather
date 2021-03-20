@@ -1,0 +1,1 @@
+ln -s ha-norwegianweather/custom_components/norwegianweather/ norwegianweather
