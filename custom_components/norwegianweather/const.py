@@ -10,9 +10,9 @@ NAME = "Norwegian Weather"
 DOMAIN = "norwegianweather"
 DOMAIN_DATA = f"{DOMAIN}_data"
 VERSION = "2021.3.1"
-ATTRIBUTION = "Data from ©Yr (www.yr.no)"
-MANUFACTURER = "yr.no"
-ISSUE_URL = "https://github.com/custom-components/NorwegianWeather/issues"
+ATTRIBUTION = "Data from MET Norway (www.met.no)"
+MANUFACTURER = f"{NAME}"
+ISSUE_URL = "https://github.com/tmjo/ha-norwegianweather/issues"
 
 # Platforms
 BINARY_SENSOR = "binary_sensor"
@@ -41,10 +41,14 @@ If you have any issues with this you need to open an issue here:
 
 
 ENTITIES = {
-    "norwegian_weather": {
+    "weather_main": {
         "type": "sensor",
-        "key": "type",
-        "attrs": [],
+        "key": "place",
+        "attrs": [
+            "timeseries",
+            "latitude",
+            "longitude",
+        ],
         "units": None,
         "convert_units_func": None,
         "device_class": None,
@@ -53,12 +57,12 @@ ENTITIES = {
     },
     "weather_cam": {
         "type": "camera",
-        "key": "type",
+        "key": "place",
         "attrs": [],
         "units": None,
         "convert_units_func": None,
         "device_class": None,
-        "icon": "mdi:home",
+        "icon": "mdi:chart-timeline-variant-shimmer",
         "state_func": None,
     },
 }

@@ -125,7 +125,9 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         _LOGGER.debug("Updating camera image")
         buf = io.BytesIO()
         # self.sky.plot_sky(buf)
-        self.coordinator.api.test(buf)
+        self.coordinator.api.process_weather_image(
+            weatherdata=self.coordinator.api.data.get("timeseries", None), filename=buf
+        )
         buf.seek(0)
         return buf.getvalue()
 

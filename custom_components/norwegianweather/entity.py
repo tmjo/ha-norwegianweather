@@ -106,7 +106,7 @@ class NorwegianWeatherEntity(CoordinatorEntity):
         """Return the device information."""
         return {
             "identifiers": {(DOMAIN, self._place)},
-            "name": f"{self._place}",
+            "name": f"{NAME} - {self._place}",
             "model": VERSION,
             "manufacturer": MANUFACTURER,
         }
@@ -175,9 +175,9 @@ class NorwegianWeatherEntity(CoordinatorEntity):
         if type(value) is datetime:
             value = dt.as_local(value)
             # value = value.strftime(CONF_STRINGTIME)
-        # if type(value) is timedelta:
-        #     # TODO: Dirtyfix to avoid unable to serialize JSON error for timedeltas in attributes
-        #     value = str(value)
+        if type(value) is timedelta:
+            # TODO: Dirtyfix to avoid unable to serialize JSON error for timedeltas in attributes, divide on other timedelta gives float
+            value = round(value / timedelta(hours=1), 1)
         return value
 
     async def async_update(self):

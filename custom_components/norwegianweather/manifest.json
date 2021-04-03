@@ -2,12 +2,12 @@
   "domain": "norwegianweather",
   "name": "Norwegian Weather",
   "version": "2021.3.1",
-  "documentation": "https://github.com/custom-components/NorwegianWeather",
-  "issue_tracker": "https://github.com/custom-components/NorwegianWeather/issues",
+  "documentation": "https://github.com/tmjo/ha-norwegianweather",
+  "issue_tracker": "https://github.com/tmjo/ha-norwegianweather/issues",
   "dependencies": [],
   "config_flow": true,
   "codeowners": [
     "@tmjo"
   ],
-  "requirements": ["Pillow==8.1.0"]
+  "requirements": ["Pillow==8.1.0", "matplotlib==3.3.3"]
 }
