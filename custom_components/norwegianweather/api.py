@@ -26,7 +26,7 @@ import numpy as np
 
 API_NAME = "norwegianweather"
 API_ATTRIBUTION = "Data from MET Norway (www.met.no)"
-VERSION = "2021.3.1"
+VERSION = "2021.3.3"
 API_USER_AGENT = f"{API_NAME}/{VERSION} https://github.com/tmjo/ha-norwegianweather"
 API_STRINGTIME = "%Y-%m-%dT%H:%M:%S%z"
 API_LANG = "nb"
@@ -78,8 +78,10 @@ CONST_WEATHERDATA = {
     # CUSTOM
     "time": "Time",
     "date": "Date",
+    "symbol_code": "Image",
     "wind_speed_bf_desc": "Beaufort",
     "wind_speed_bf": "Beaufort",
+    "wind_speed_knot": " Wind speed knot",
     "wind_from_direction_cardinal": "Wind direction",
 }
 
@@ -127,6 +129,7 @@ class NorwegianWeatherApiClient:
         self.location = Location(place, latitude, longitude, altitude)
         self.yrdata = None
         self.data = None
+        self.current = None
         self.expires = None
         self.last_modified = None
         self.output_dir = output_dir
@@ -229,7 +232,6 @@ class NorwegianWeatherApiClient:
                         )
             # Internal tweaks
             self.data = {}
-            # timeseries = []
             intervals = []
             i = 0
             for serie in self.location.time_series:
@@ -241,14 +243,14 @@ class NorwegianWeatherApiClient:
             self.process_weather_image(intervals)
             self.process_weather_plot(intervals)
 
-            # for interval in intervals:
-            #     time = interval.get("time")
-            #     timeseries[time] = interval
+            self.current = self.location.get_timeserie_time_hourlydata(dt_now())
 
             self.data["timeseries"] = intervals
             self.data["latitude"] = self.location.latitude
             self.data["longitude"] = self.location.longitude
             self.data["place"] = self.location.name
+            for data in CONST_WEATHERDATA:
+                self.data[data] = self.current.get(data, None)
 
     def process_weather_image(self, weatherdata, filename=None, qty=6):
         images = []
@@ -307,6 +309,18 @@ class Location:
 
     def coordinates(self):
         return (self.latitude, self.longitude)
+
+    def get_timeserie_time(self, time: dt.datetime):
+        for i in range(len(self.time_series)):
+            if time > self.time_series[i].time and time < self.time_series[i + 1].time:
+                return self.time_series[i]
+        return None
+
+    def get_timeserie_time_hourlydata(self, time: dt.datetime):
+        interval = self.get_timeserie_time(time)
+        if interval is not None:
+            return interval.get_intervals_hourly_data()
+        return None
 
 
 class Timeserie:
@@ -635,7 +649,6 @@ def plot_weatherdata(data, filename=None, show=False):
     for d in data:
         # x.append(dt_parse_datetime(d.get("time")))
         x.append(d.get("time"))
-        print(f"Adding {d.get('time')}")
         y1.append(float(d.get("wind_speed")))
         y2.append(float(d.get("wind_from_direction")))
         y3.append(float(d.get("wind_speed_of_gust")))
@@ -891,7 +904,9 @@ async def main():
         session=session,
     )
     # data = await controller.async_update()
-    await controller.async_update()
+    data = await controller.async_update()
+
+    print(data)
 
     # print("*********** UNITS *****************")
     # for unit in controller.api.location.units:
@@ -908,6 +923,9 @@ async def main():
     #     print(f"{interval}\n")
     # controller.api.process_weather_image(intervals)
     # controller.api.process_weather_plot(intervals)
+
+    # current_weather = controller.api.location.get_timeserie_time_hourlydata(dt_now())
+    # print(current_weather)
 
     controller.writeconfig()
     await session.close()

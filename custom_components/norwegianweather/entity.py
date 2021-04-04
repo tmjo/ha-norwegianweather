@@ -130,7 +130,7 @@ class NorwegianWeatherEntity(CoordinatorEntity):
         }
 
         try:
-            # attrs.update(self.coordinator.data.get("location"))
+            attrs.update({"place": self.coordinator.data.get("place")})
             for attr_key in self._attrs_keys:
                 key = attr_key.replace(".", "_")
                 attrs[key] = self.get_value_from_key(attr_key)
