@@ -39,15 +39,10 @@ def round_0_dec(value, unit=None):
     return round_to_dec(value, None, unit)
 
 
-# def map_tide_status(value, unit=None):
-#     return TIDE_STATUS.get(value, f"unknown {value}")
-
-
 convert_units_funcs = {
     "round_0_dec": round_0_dec,
     "round_1_dec": round_1_dec,
     "round_2_dec": round_2_dec,
-    # "map_tide_status": map_tide_status,
 }
 
 
