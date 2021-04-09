@@ -83,7 +83,43 @@ ENTITIES = {
         "icon": "mdi:weather-windy",
         "state_func": None,
     },
-    "wind_direction": {
+    "weather_wind_gusts": {
+        "type": "sensor",
+        "key": "wind_speed_of_gust",
+        "attrs": [
+            "wind_from_direction",
+            "wind_from_direction_cardinal",
+            "wind_speed",
+            "wind_speed_of_gust",
+            "wind_speed_bf",
+            "wind_speed_bf_desc",
+            "wind_speed_knot",
+        ],
+        "units": SPEED_METERS_PER_SECOND,
+        "convert_units_func": None,
+        "device_class": None,
+        "icon": "mdi:weather-windy",
+        "state_func": None,
+    },
+    "weather_wind_beaufort": {
+        "type": "sensor",
+        "key": "wind_speed_bf",
+        "attrs": [
+            "wind_from_direction",
+            "wind_from_direction_cardinal",
+            "wind_speed",
+            "wind_speed_of_gust",
+            "wind_speed_bf",
+            "wind_speed_bf_desc",
+            "wind_speed_knot",
+        ],
+        "units": None,
+        "convert_units_func": None,
+        "device_class": None,
+        "icon": "mdi:weather-windy",
+        "state_func": None,
+    },
+    "weather_wind_direction": {
         "type": "sensor",
         "key": "wind_from_direction",
         "attrs": [
@@ -101,7 +137,7 @@ ENTITIES = {
         "icon": "mdi:windsock",
         "state_func": None,
     },
-    "wind_direction_cardinal": {
+    "weather_wind_direction_cardinal": {
         "type": "sensor",
         "key": "wind_from_direction_cardinal",
         "attrs": [
@@ -119,7 +155,7 @@ ENTITIES = {
         "icon": "mdi:windsock",
         "state_func": None,
     },
-    "temperature": {
+    "weather_temperature": {
         "type": "sensor",
         "key": "air_temperature",
         "attrs": ["dew_point_temperature", "relative_humidity"],
@@ -129,7 +165,7 @@ ENTITIES = {
         "icon": None,
         "state_func": None,
     },
-    "air_pressure": {
+    "weather_air_pressure": {
         "type": "sensor",
         "key": "air_pressure_at_sea_level",
         "attrs": [],
@@ -139,7 +175,7 @@ ENTITIES = {
         "icon": None,
         "state_func": None,
     },
-    "cloud_area_fraction": {
+    "weather_cloud_area_fraction": {
         "type": "sensor",
         "key": "cloud_area_fraction",
         "attrs": [
@@ -154,7 +190,7 @@ ENTITIES = {
         "icon": "mdi:cloud",
         "state_func": None,
     },
-    "dew_point": {
+    "weather_dew_point": {
         "type": "sensor",
         "key": "dew_point_temperature",
         "attrs": ["air_temperature", "relative_humidity"],
@@ -164,7 +200,7 @@ ENTITIES = {
         "icon": None,
         "state_func": None,
     },
-    "fog": {
+    "weather_fog": {
         "type": "sensor",
         "key": "fog_area_fraction",
         "attrs": ["fog_area_fraction", "cloud_area_fraction"],
@@ -174,7 +210,7 @@ ENTITIES = {
         "icon": "mdi:weather-fog",
         "state_func": None,
     },
-    "relative_humidity": {
+    "weather_relative_humidity": {
         "type": "sensor",
         "key": "relative_humidity",
         "attrs": ["air_temperature", "dew_point_temperature"],
@@ -184,7 +220,7 @@ ENTITIES = {
         "icon": None,
         "state_func": None,
     },
-    "uv_index": {
+    "weather_uv_index": {
         "type": "sensor",
         "key": "ultraviolet_index_clear_sky",
         "attrs": [],
@@ -194,7 +230,7 @@ ENTITIES = {
         "icon": "mdi:weather-sunny-alert",
         "state_func": None,
     },
-    "precipitation": {
+    "weather_precipitation": {
         "type": "sensor",
         "key": "precipitation_amount",
         "attrs": [
@@ -209,7 +245,7 @@ ENTITIES = {
         "icon": "mdi:weather-rainy",
         "state_func": None,
     },
-    "thunder": {
+    "weather_thunder": {
         "type": "sensor",
         "key": "probability_of_thunder",
         "attrs": ["probability_of_thunder"],
