@@ -26,6 +26,8 @@ from .const import (
     ATTRIBUTION,
 )
 
+SCAN_INTERVAL = timedelta(seconds=120)
+
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
@@ -74,6 +76,16 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
 
     # def __init__(self):
     #     Camera.__init__(self)
+
+    @property
+    def brand(self):
+        """Return the camera brand."""
+        return self.device_info.get("manufacturer", None)
+
+    @property
+    def model(self):
+        """Return the camera model."""
+        return self.device_info.get("model", None)
 
     @property
     def frame_interval(self):
