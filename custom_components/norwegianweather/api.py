@@ -716,7 +716,7 @@ def plot_weatherdata(data, filename=None, show=False):
     # Save image
     if filename is None:
         filename = os.path.join(CONST_DIR_DEFAULT, API_NAME + "_plot.png")
-       _LOGGER.debug(f"Saving image {filename}.")
+        _LOGGER.debug(f"Saving image {filename}.")
     plt.savefig(filename)
 
     # Show
