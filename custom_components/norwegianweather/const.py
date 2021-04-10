@@ -19,7 +19,7 @@ from homeassistant.const import (
 NAME = "Norwegian Weather"
 DOMAIN = "norwegianweather"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "2021.4.2"
+VERSION = "2021.4.3"
 ATTRIBUTION = "Data from MET Norway (www.met.no)"
 MANUFACTURER = f"{NAME}"
 ISSUE_URL = "https://github.com/tmjo/ha-norwegianweather/issues"
