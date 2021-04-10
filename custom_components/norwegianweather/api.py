@@ -168,6 +168,7 @@ class NorwegianWeatherApiClient:
         if self.yrdata is not None:
             self.process_data()
             return self.data
+        return None
 
     async def api_wrapper(
         self, method: str, url: str, data: dict = {}, headers: dict = {}
@@ -626,7 +627,13 @@ def image_create(imagedata):
 
     draw = ImageDraw.Draw(newimage)
     textcolor = (0, 0, 0)
-    font = ImageFont.truetype(CONST_FILE_FONT, 25)
+    font = None
+    try:
+        font = ImageFont.truetype(CONST_FILE_FONT, 25)
+    except TypeError as e:
+        _LOGGER.debug(
+            f"Could not apply font {CONST_FILE_FONT}. Will have to use ugly default font. ({e})"
+        )
 
     draw.text(xy=(30, 0), text=imagedata.get("time"), fill=textcolor, font=font)
     dropdata = ["time", "date", "symbol_code"]
