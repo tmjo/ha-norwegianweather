@@ -13,7 +13,7 @@
             }
         },
         "error": {
-            "auth": "Latitude/longitude is wrong or outside coverage."
+            "auth": "The API did not respond or did not accept your request."
         },
         "abort": {
             "single_instance_allowed": "Only a single configuration is allowed."
