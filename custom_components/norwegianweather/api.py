@@ -294,8 +294,11 @@ class NorwegianWeatherApiClient:
         _LOGGER.debug(f"Saving image {filename}.")
         newimage.save(filename, "png")
 
-    def process_weather_plot(self, weatherdata, filename=None, qty=6):
-        plot_weatherdata(weatherdata, show=False)
+    def process_weather_plot(self, weatherdata, filename=None):
+        if filename is None:
+            filename = os.path.join(self.output_dir, API_NAME + ".png")
+        _LOGGER.debug(f"Saving plot {filename}.")
+        plot_weatherdata(weatherdata, show=False, filename=filename)
 
 
 class Location:
