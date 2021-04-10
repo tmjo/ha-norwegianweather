@@ -4,7 +4,6 @@ Custom integration to integrate NorwegianWeather with Home Assistant.
 """
 import asyncio
 import os
-from config.custom_components.norwegianweather.camera import NorwegianWeatherCam
 from homeassistant.const import CONF_MONITORED_CONDITIONS
 from datetime import timedelta
 import logging
@@ -20,6 +19,7 @@ from .api import NorwegianWeatherApiClient
 from .binary_sensor import NorwegianWeatherBinarySensor
 from .switch import NorwegianWeatherSwitch
 from .sensor import NorwegianWeatherSensor
+from .camera import NorwegianWeatherCam
 from .const import (
     CONF_LAT,
     CONF_LONG,
