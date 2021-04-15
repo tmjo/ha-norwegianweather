@@ -5,5 +5,5 @@ custom_components/__pycache__/
 *$py.class
 *.pyc
 *.pyc
-tmp/
+test/
 env/
