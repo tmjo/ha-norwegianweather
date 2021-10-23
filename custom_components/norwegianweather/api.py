@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 import re
 import argparse
 import json
+import io
 
 from decimal import Decimal
 import email.utils as eut
@@ -42,7 +43,8 @@ CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
 
 # Filepaths
 CONST_FILE_WEATHERICONS = os.path.join(CONST_DIR_WEATHERICONS, "weathericon.tar")
-CONST_FILE_FONT = os.path.join(CONST_DIR_FONTS, "NotoSansJP-Regular.otf")
+CONST_FILE_FONT = os.path.join(CONST_DIR_FONTS, "XXNotoSansJP-Regular.otf")
+CONST_FILE_FONT2 = os.path.join(CONST_DIR_FONTS, "SourceSerifPro-Regular-26.pil")
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -293,6 +295,8 @@ class NorwegianWeatherApiClient:
 
         _LOGGER.debug(f"Saving image {filename}.")
         newimage.save(filename, "png")
+        newimage.close()
+        images = None
 
     def process_weather_plot(self, weatherdata, filename=None):
         if filename is None:
@@ -547,6 +551,9 @@ def parse_arguments():
     parser.add_argument(
         "-s", "--show", help="Show plot", required=False, action="store_true"
     )
+    parser.add_argument(
+        "-l", "--loop", help="Loop every 10 seconds", action="store_true"
+    )
     args = parser.parse_args()
     return args
 
@@ -633,10 +640,19 @@ def image_create(imagedata):
     font = None
     try:
         font = ImageFont.truetype(CONST_FILE_FONT, 25)
-    except TypeError as e:
-        _LOGGER.debug(
-            f"Could not apply font {CONST_FILE_FONT}. Will have to use ugly default font. ({e})"
-        )
+        _LOGGER.debug(f"Loaded font {CONST_FILE_FONT} {font}.")
+    except (TypeError, FileNotFoundError, OSError) as e:
+        _LOGGER.debug(f"Could not apply truetype font {CONST_FILE_FONT} ({e}).")
+        font = None
+
+    if font is None:
+        try:
+            font = ImageFont.load(CONST_FILE_FONT2)
+            _LOGGER.debug(f"Loaded PIL-font {CONST_FILE_FONT2}.")
+        except (TypeError, FileNotFoundError, OSError, AttributeError) as e:
+            _LOGGER.debug(
+                f"Could not apply PIL-font {CONST_FILE_FONT2}. Will have to use ugly default font, sorry. ({e})"
+            )
 
     draw.text(xy=(30, 0), text=imagedata.get("time"), fill=textcolor, font=font)
     dropdata = ["time", "date", "symbol_code"]
@@ -646,6 +662,7 @@ def image_create(imagedata):
         if key not in dropdata:
             draw.text(xy=(30, height), text=val, fill=textcolor, font=font)
             height += 27
+    draw = None
     return newimage
 
 
@@ -722,6 +739,7 @@ def plot_weatherdata(data, filename=None, show=False):
     # Show
     if show:
         plt.show()
+    plt.close()
 
 
 # def plot_add_highlow(plt, highlow=None, color="darkorange", fontsize=8):
@@ -913,7 +931,15 @@ async def main():
         session=session,
     )
     # data = await controller.async_update()
-    data = await controller.async_update()
+    if args.loop:
+        while True:
+            data = await controller.async_update()
+            # print(data)
+            print(f"Memory usage: {memory_usage_psutil()}")
+            print(f"Figures: {[plt.figure(i) for i in plt.get_fignums()]}")
+            await asyncio.sleep(10)
+    else:
+        data = await controller.async_update()
 
     print(data)
 
@@ -940,6 +966,15 @@ async def main():
     await session.close()
 
 
+def memory_usage_psutil():
+    # return the memory usage in MB
+    import psutil
+
+    process = psutil.Process()
+    mem = process.memory_info()[0] / float(2 ** 20)
+    return mem
+
+
 if __name__ == "__main__":
     import sys
 
@@ -953,4 +988,10 @@ if __name__ == "__main__":
     _LOGGER.addHandler(fh)
     # asyncio.run(main())
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    try:
+        loop.run_until_complete(main())
+    except KeyboardInterrupt as e:  # noqa
+        # Close connection on user interuption
+        print("Interrupted by user")
+    except Exception as e:
+        print(e)
