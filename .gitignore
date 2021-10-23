@@ -7,3 +7,5 @@ custom_components/__pycache__/
 *.pyc
 test/
 env/
+tmp/
+custom_components/norwegianweather/tmp/*.*
