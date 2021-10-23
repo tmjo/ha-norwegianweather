@@ -52,11 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     place = entry.data.get(CONF_PLACE)
 
     session = async_get_clientsession(hass)
-    # output_dir = os.path.join("/workspaces/home-assistant-new/config", "www")
-    output_dir = os.path.join(hass.config.config_dir, "www")
-    client = NorwegianWeatherApiClient(
-        place, latitude, longitude, session, output_dir=output_dir
-    )
+    client = NorwegianWeatherApiClient(place, latitude, longitude, session)
 
     coordinator = NorwegianWeatherDataUpdateCoordinator(
         hass, entry=entry, client=client
@@ -118,7 +114,7 @@ class NorwegianWeatherDataUpdateCoordinator(DataUpdateCoordinator):
         return data
 
     async def add_schedulers(self):
-        """ Add schedules to udpate data """
+        """Add schedules to udpate data"""
         _LOGGER.debug(f"Adding schedulers.")
         async_track_time_interval(
             self.hass,
