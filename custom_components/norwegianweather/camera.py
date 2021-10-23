@@ -1,9 +1,12 @@
 """Camera platform for NorwegianWeather."""
 
+from __future__ import annotations
 import logging
 from datetime import timedelta
 import io
 from typing import Callable, List
+import mimetypes
+import os
 
 import voluptuous as vol
 
@@ -74,8 +77,18 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         )
         Camera.__init__(self)
 
-    # def __init__(self):
-    #     Camera.__init__(self)
+        # Directories
+        CONST_DIR_THIS = os.path.split(__file__)[0]
+        CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
+        file_path = os.path.join(CONST_DIR_DEFAULT, "norwegianweather.png")
+
+        self._name = name
+        self.check_file_path_access(file_path)
+        self._file_path = file_path
+        # Set content type of local file
+        content, _ = mimetypes.guess_type(file_path)
+        if content is not None:
+            self.content_type = content
 
     @property
     def brand(self):
@@ -95,12 +108,41 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         # reduce...
         return 60
 
-    def camera_image(self):
-        """Load image bytes in memory"""
+    def camera_image(self) -> bytes | None:
+
+        """Return image response."""
+
         _LOGGER.debug("Updating camera image")
-        buf = io.BytesIO()
-        self.coordinator.api.process_weather_image(
-            weatherdata=self.coordinator.api.data.get("timeseries", None), filename=buf
-        )
-        buf.seek(0)
-        return buf.getvalue()
+        try:
+            with open(self._file_path, "rb") as file:
+                return file.read()
+        except FileNotFoundError:
+            _LOGGER.warning(
+                "Could not read camera %s image from file: %s",
+                self._name,
+                self._file_path,
+            )
+        return None
+
+    def check_file_path_access(self, file_path):
+        """Check that filepath given is readable."""
+        if not os.access(file_path, os.R_OK):
+            _LOGGER.warning(
+                "Could not read camera %s image from file: %s", self._name, file_path
+            )
+
+    def update_file_path(self, file_path):
+        """Update the file_path."""
+        self.check_file_path_access(file_path)
+        self._file_path = file_path
+        self.schedule_update_ha_state()
+
+    @property
+    def name(self):
+        """Return the name of this camera."""
+        return self._name
+
+    @property
+    def extra_state_attributes(self):
+        """Return the camera state attributes."""
+        return {"file_path": self._file_path}
