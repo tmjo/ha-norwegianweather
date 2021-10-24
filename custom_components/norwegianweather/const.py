@@ -15,6 +15,8 @@ from homeassistant.const import (
     PRESSURE_HPA,
 )
 
+from .api import CONST_DIR_DEFAULT
+
 # Base component constants
 NAME = "Norwegian Weather"
 DOMAIN = "norwegianweather"
