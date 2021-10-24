@@ -27,6 +27,7 @@ from .const import (
     NAME,
     VERSION,
     ATTRIBUTION,
+    CONST_DIR_DEFAULT,
 )
 
 SCAN_INTERVAL = timedelta(seconds=120)
@@ -78,8 +79,8 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         Camera.__init__(self)
 
         # Directories
-        CONST_DIR_THIS = os.path.split(__file__)[0]
-        CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
+        # CONST_DIR_THIS = os.path.split(__file__)[0]
+        # CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
         file_path = os.path.join(CONST_DIR_DEFAULT, "norwegianweather.png")
 
         self._name = name
