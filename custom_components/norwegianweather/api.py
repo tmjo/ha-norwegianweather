@@ -43,8 +43,9 @@ CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
 
 # Filepaths
 CONST_FILE_WEATHERICONS = os.path.join(CONST_DIR_WEATHERICONS, "weathericon.tar")
-CONST_FILE_FONT = os.path.join(CONST_DIR_FONTS, "XXNotoSansJP-Regular.otf")
-CONST_FILE_FONT2 = os.path.join(CONST_DIR_FONTS, "SourceSerifPro-Regular-26.pil")
+CONST_FILE_FONT = os.path.join(CONST_DIR_FONTS, "NotoSans-Regular.ttf")
+CONST_FILE_FONT_PIL = os.path.join(CONST_DIR_FONTS, "NotoSans-25.pil")
+
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -262,6 +263,7 @@ class NorwegianWeatherApiClient:
                 f"Processing weather image from {len(weatherdata)} time intervals - creating {qty} images."
             )
             cnt = 0
+            font = image_font()
             for data in weatherdata:
                 time = data.get("time", None)
                 imagedata = image_create_process_data(time, data, self.location.units)
@@ -273,17 +275,18 @@ class NorwegianWeatherApiClient:
                         legenddata[k] = CONST_WEATHERDATA.get(k, k)
                     legenddata["time"] = imagedata["date"]
                     legenddata["symbol_code"] = None
-                    imagelegend = image_create(legenddata)
+                    imagelegend = image_create(legenddata, font)
                     images.append(imagelegend)
                 elif cnt >= qty:
                     break
                 cnt += 1
 
-                image = image_create(imagedata)
+                image = image_create(imagedata, font)
                 images.append(image)
                 _LOGGER.debug(
                     f"Processing image for interval {time} - size: {image.size}"
                 )
+            font = None
         else:
             _LOGGER.debug("Could not find any intervals for image processing.")
 
@@ -622,7 +625,7 @@ def image_create_process_data(time, data, units, datafilter=CONST_IMAGEVALUES):
     return imagedata
 
 
-def image_create(imagedata):
+def image_create(imagedata, font):
     _LOGGER.debug("Creating weather image.")
     weathersymbol = get_weather_symbol(imagedata.get("symbol_code"))
 
@@ -637,22 +640,6 @@ def image_create(imagedata):
 
     draw = ImageDraw.Draw(newimage)
     textcolor = (0, 0, 0)
-    font = None
-    try:
-        font = ImageFont.truetype(CONST_FILE_FONT, 25)
-        _LOGGER.debug(f"Loaded font {CONST_FILE_FONT} {font}.")
-    except (TypeError, FileNotFoundError, OSError) as e:
-        _LOGGER.debug(f"Could not apply truetype font {CONST_FILE_FONT} ({e}).")
-        font = None
-
-    if font is None:
-        try:
-            font = ImageFont.load(CONST_FILE_FONT2)
-            _LOGGER.debug(f"Loaded PIL-font {CONST_FILE_FONT2}.")
-        except (TypeError, FileNotFoundError, OSError, AttributeError) as e:
-            _LOGGER.debug(
-                f"Could not apply PIL-font {CONST_FILE_FONT2}. Will have to use ugly default font, sorry. ({e})"
-            )
 
     draw.text(xy=(30, 0), text=imagedata.get("time"), fill=textcolor, font=font)
     dropdata = ["time", "date", "symbol_code"]
@@ -666,8 +653,26 @@ def image_create(imagedata):
     return newimage
 
 
-def plot_weatherdata(data, filename=None, show=False):
+def image_font():
+    font = None
+    try:
+        font = ImageFont.truetype(CONST_FILE_FONT, 25)
+        _LOGGER.debug(f"Loaded font {CONST_FILE_FONT} {font}.")
+    except (TypeError, FileNotFoundError, OSError) as e:
+        _LOGGER.debug(f"Could not apply truetype font {CONST_FILE_FONT} ({e}).")
 
+    if font is None:
+        try:
+            font = ImageFont.load(CONST_FILE_FONT_PIL)
+            _LOGGER.debug(f"Loaded PIL-font {CONST_FILE_FONT_PIL}.")
+        except (TypeError, FileNotFoundError, OSError, AttributeError) as e:
+            _LOGGER.debug(
+                f"Could not apply PIL-font {CONST_FILE_FONT_PIL}. Will have to use ugly default font, sorry. ({e})"
+            )
+    return font
+
+
+def plot_weatherdata(data, filename=None, show=False):
     _LOGGER.debug("Creating plot")
     x = []
     y1 = []
