@@ -1,5 +1,5 @@
 # Norwegian Weather
-[![Buy Me A Coffee][https://img.shields.io/badge/support-buymeacoffee-222222.svg?style=flat-square]][https://www.buymeacoffee.com/tmjo]
+[![Buy Me A Coffee](https://img.shields.io/badge/support-buymeacoffee-222222.svg?style=flat-square)](https://www.buymeacoffee.com/tmjo)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) ![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)
 
 {% if pending_update %}
@@ -21,7 +21,7 @@ You will be asked to give your location a name and to provide latitude and longi
 Entities can be added and removed by clicking *Options* in HA integreation view at any time. It is also possible to enable more than one location by adding the integration several times.
 
 ## Usage
-Use the integration as you please, but I strongly recommend to take a look at the [Apexchart-card] (https://github.com/RomRider/apexcharts-card) by Romrider - it is an excellent graph card for lovelace which also enables the possibility to show future values. This is necessary to display forecast values which are stored as attributes in the main sensor.
+Use the integration as you please, but I strongly recommend to take a look at the [Apexchart-card](https://github.com/RomRider/apexcharts-card) by Romrider - it is an excellent graph card for lovelace which also enables the possibility to show future values. This is necessary to display forecast values which are stored as attributes in the main sensor.
 
 If you are curious about specific details and definitions, please see [api.met.no](https://api.met.no/).
 
