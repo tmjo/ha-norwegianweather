@@ -136,6 +136,8 @@ class NorwegianWeatherApiClient:
         self.expires = None
         self.last_modified = None
         self.output_dir = output_dir
+        self.file_image = API_NAME + "_" + self.location.name + "_img.png"
+        self.file_plot = API_NAME + "_" + self.location.name + "_plot.png"
 
     def get_url(
         self,
@@ -280,7 +282,7 @@ class NorwegianWeatherApiClient:
                     legenddata = {}
                     for k in imagedata:
                         legenddata[k] = CONST_WEATHERDATA.get(k, k)
-                    legenddata["time"] = imagedata["date"]
+                    legenddata["time"] = imagedata["date"] + "\n" + self.location.name
                     legenddata["symbol_code"] = None
                     imagelegend = image_create(legenddata, font)
                     images.append(imagelegend)
@@ -301,7 +303,7 @@ class NorwegianWeatherApiClient:
         newimage = image_list_combine(images)
 
         if filename is None:
-            filename = os.path.join(self.output_dir, API_NAME + ".png")
+            filename = os.path.join(self.output_dir, self.file_image)
 
         _LOGGER.debug(f"Saving image {filename}.")
         newimage.save(filename, "png")
@@ -310,9 +312,11 @@ class NorwegianWeatherApiClient:
 
     def process_weather_plot(self, weatherdata, filename=None):
         if filename is None:
-            filename = os.path.join(self.output_dir, API_NAME + "_plot.png")
+            filename = os.path.join(self.output_dir, self.file_plot)
         _LOGGER.debug(f"Saving plot {filename}.")
-        plot_weatherdata(weatherdata, show=False, filename=filename)
+        plot_weatherdata(
+            weatherdata, show=False, filename=filename, location_name=self.location.name
+        )
 
 
 class Location:
@@ -679,7 +683,7 @@ def image_font():
     return font
 
 
-def plot_weatherdata(data, filename=None, show=False):
+def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
     _LOGGER.debug("Creating plot")
     x = []
     y1 = []
@@ -728,7 +732,7 @@ def plot_weatherdata(data, filename=None, show=False):
     ax.xaxis.set_major_formatter(xfmt)
     ax.xaxis.set_major_locator(xloc)
     ax.set(
-        title=f"Weather for LOCATION",
+        title=f"Weather for {location_name}",
         ylabel="Variables",
     )
     plt.xticks(rotation=90, ha="center")

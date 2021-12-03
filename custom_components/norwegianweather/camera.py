@@ -81,7 +81,8 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         # Directories
         # CONST_DIR_THIS = os.path.split(__file__)[0]
         # CONST_DIR_DEFAULT = os.path.join(CONST_DIR_THIS, "tmp")
-        file_path = os.path.join(CONST_DIR_DEFAULT, "norwegianweather.png")
+        # file_path = os.path.join(CONST_DIR_DEFAULT, "norwegianweather.png")
+        file_path = os.path.join(CONST_DIR_DEFAULT, self.coordinator.api.file_image)
 
         self._name = name
         self.check_file_path_access(file_path)
@@ -138,10 +139,11 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         self._file_path = file_path
         self.schedule_update_ha_state()
 
-    @property
-    def name(self):
-        """Return the name of this camera."""
-        return self._name
+    # @property
+    # def name(self):
+    #     """Return the name of this camera."""
+    #     # return self._name
+    #     return f"{self._place}_{self._entity_name}".replace("_", " ")
 
     @property
     def extra_state_attributes(self):
