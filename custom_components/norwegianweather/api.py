@@ -244,8 +244,15 @@ class NorwegianWeatherApiClient:
                 i += 1
                 intervals.append(serie.get_intervals_hourly_data())
 
-            self.process_weather_image(intervals)
-            self.process_weather_plot(intervals)
+            try:
+                self.process_weather_image(intervals)
+            except Exception as e:  # pylint: disable=broad-except
+                _LOGGER.warning(f"Error processing weather image: {e}")
+
+            try:
+                self.process_weather_plot(intervals)
+            except Exception as e:  # pylint: disable=broad-except
+                _LOGGER.warning(f"Error processing weather plot: {e}")
 
             self.current = self.location.get_timeserie_time_hourlydata(dt_now())
 
@@ -681,9 +688,9 @@ def plot_weatherdata(data, filename=None, show=False):
     for d in data:
         # x.append(dt_parse_datetime(d.get("time")))
         x.append(d.get("time"))
-        y1.append(float(d.get("wind_speed")))
-        y2.append(float(d.get("wind_from_direction")))
-        y3.append(float(d.get("wind_speed_of_gust")))
+        y1.append(float(d.get("wind_speed", 0.0)))
+        y2.append(float(d.get("wind_from_direction", 0.0)))
+        y3.append(float(d.get("wind_speed_of_gust", 0.0)))
 
     # Min/max/now
     ymin = min(y1 + y2 + y3)

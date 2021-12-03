@@ -160,12 +160,12 @@ class NorwegianWeatherEntity(CoordinatorEntity):
         if isinstance(data, dict) and second is not None:
             value = data.get(second, None)
             if value is None:
-                _LOGGER.error(f"Did not find data for {first}.{second}")
+                _LOGGER.warning(f"Did not find data for {first}.{second}")
         elif data is not None:
             value = data
         else:
             value = None
-            _LOGGER.error(f"Did not find data for {first}")
+            _LOGGER.warning(f"Did not find data for {first}")
 
         if type(value) is datetime:
             value = dt.as_local(value)

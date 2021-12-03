@@ -91,12 +91,14 @@ class NorwegianWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def _test_credentials(self, place, latitude, longitude):
         """Return true if credentials is valid."""
         try:
+            _LOGGER.debug("Checking credentials.")
             session = async_create_clientsession(self.hass)
             client = NorwegianWeatherApiClient(place, latitude, longitude, session)
             await client.async_get_data()
             return True
-        except Exception:  # pylint: disable=broad-except
-            pass
+        except Exception as e:  # pylint: disable=broad-except
+            _LOGGER.error(f"Failed during testing of credentials: {e}")
+            # pass
         return False
 
     @staticmethod
