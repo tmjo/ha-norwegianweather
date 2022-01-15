@@ -110,7 +110,10 @@ class NorwegianWeatherCam(Camera, NorwegianWeatherEntity):
         # reduce...
         return 60
 
-    def camera_image(self) -> bytes | None:
+    async def async_camera_image(
+        self, width: int | None = None, height: int | None = None
+    ) -> bytes | None:
+        # def camera_image(self) -> bytes | None:
 
         """Return image response."""
 
