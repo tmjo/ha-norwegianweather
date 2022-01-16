@@ -712,8 +712,11 @@ def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
 
     twin2.spines["right"].set_position(("axes", 1.2))
     ax.plot(x, y1, label="Wind speed", color="green", linewidth=3)
+    ax.legend()
     twin1.plot(x, y2, label="Wind direction", color="darkorange", linewidth=3)
+    twin1.legend()
     ax.plot(x, y3, label="Wind gusts", color="blue", linewidth=3)
+    ax.legend()
     # plt.axvline(x=now, color="red", linestyle="dashed", linewidth=1)
     # plt.text(
     #     now,
@@ -744,7 +747,7 @@ def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
 
     # Add a legend
     # plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
-    plt.legend()
+    # plt.legend()  # => removed, put on ax instead - avoid No artists with labels found to put in legend. Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
 
     # Save image
     if filename is None:
