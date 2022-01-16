@@ -21,7 +21,7 @@ from .api import CONST_DIR_DEFAULT
 NAME = "Norwegian Weather"
 DOMAIN = "norwegianweather"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 ATTRIBUTION = "Data from MET Norway (www.met.no)"
 MANUFACTURER = f"{NAME}"
 ISSUE_URL = "https://github.com/tmjo/ha-norwegianweather/issues"
