@@ -6,7 +6,8 @@ import asyncio
 import socket
 from typing import List, Optional, Union
 import aiohttp
-import async_timeout
+
+# import async_timeout
 import xml.etree.ElementTree as ET
 import re
 import argparse
@@ -180,28 +181,31 @@ class NorwegianWeatherApiClient:
     ) -> dict:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
-                if self.last_modified is not None:
-                    ims_headers = {
-                        "If-Modified-Since": eut.format_datetime(
-                            self.last_modified, usegmt=True
-                        )
-                    }
-                    response = await self._session.get(
-                        url, headers={**headers, **ims_headers}
+            if self.last_modified is not None:
+                ims_headers = {
+                    "If-Modified-Since": eut.format_datetime(
+                        self.last_modified, usegmt=True
                     )
-                    if response.status == 304:  # 304 - not modified
-                        _LOGGER.debug(
-                            f"API response: {response.status} Expires: {self.expires} Last modified: {self.last_modified} Returning existing data."
-                        )
-                        return self.yrdata
-                response = await self._session.get(url, headers=headers)
-                self.expires = parse_http_date(response.headers["expires"])
-                self.last_modified = parse_http_date(response.headers["last-modified"])
-                _LOGGER.debug(
-                    f"API response: {response.status} Expires: {self.expires} Last modified: {self.last_modified}"
+                }
+                response = await self._session.get(
+                    url,
+                    headers={**headers, **ims_headers},
+                    timeout=aiohttp.ClientTimeout(total=TIMEOUT),
                 )
-                return await response.json()
+                if response.status == 304:  # 304 - not modified
+                    _LOGGER.debug(
+                        f"API response: {response.status} Expires: {self.expires} Last modified: {self.last_modified} Returning existing data."
+                    )
+                    return self.yrdata
+            response = await self._session.get(
+                url, headers=headers, timeout=aiohttp.ClientTimeout(total=TIMEOUT)
+            )
+            self.expires = parse_http_date(response.headers["expires"])
+            self.last_modified = parse_http_date(response.headers["last-modified"])
+            _LOGGER.debug(
+                f"API response: {response.status} Expires: {self.expires} Last modified: {self.last_modified}"
+            )
+            return await response.json()
 
         except asyncio.TimeoutError as e:
             _LOGGER.error(f"Timeout error fetching information from API")
