@@ -6,8 +6,6 @@ import asyncio
 import socket
 from typing import List, Optional, Union
 import aiohttp
-
-# import async_timeout
 import xml.etree.ElementTree as ET
 import re
 import argparse
