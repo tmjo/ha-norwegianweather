@@ -274,7 +274,8 @@ class NorwegianWeatherApiClient:
                 f"Processing weather image from {len(weatherdata)} time intervals - creating {qty} images."
             )
             cnt = 0
-            font = image_font()
+            _LOGGER.debug(f"PIL/image version: {Image.__version__}")
+            font = weatherimage_font()
             for data in weatherdata:
                 time = data.get("time", None)
                 imagedata = image_create_process_data(time, data, self.location.units)
@@ -666,19 +667,21 @@ def image_create(imagedata, font):
     return newimage
 
 
-def image_font():
+def weatherimage_font():
     font = None
     try:
         font = ImageFont.truetype(CONST_FILE_FONT, 25)
         _LOGGER.debug(f"Loaded font {CONST_FILE_FONT} {font}.")
-    except (TypeError, FileNotFoundError, OSError) as e:
+    # except (TypeError, FileNotFoundError, OSError) as e:
+    except Exception as e:
         _LOGGER.debug(f"Could not apply truetype font {CONST_FILE_FONT} ({e}).")
 
     if font is None:
         try:
             font = ImageFont.load(CONST_FILE_FONT_PIL)
             _LOGGER.debug(f"Loaded PIL-font {CONST_FILE_FONT_PIL}.")
-        except (TypeError, FileNotFoundError, OSError, AttributeError) as e:
+        # except (TypeError, FileNotFoundError, OSError, AttributeError) as e:
+        except Exception as e:
             _LOGGER.debug(
                 f"Could not apply PIL-font {CONST_FILE_FONT_PIL}. Will have to use ugly default font, sorry. ({e})"
             )
