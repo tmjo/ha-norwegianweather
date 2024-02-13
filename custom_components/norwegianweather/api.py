@@ -20,8 +20,8 @@ import os, sys
 from PIL import Image, TarIO, ImageDraw, ImageFont
 
 # matplotstuff
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+# import matplotlib.pyplot as plt       # 2024-02-13: Temporarily disable due to installation failure on HA
+# import matplotlib.dates as mdates     # 2024-02-13: Temporarily disable due to installation failure on HA
 import numpy as np
 
 API_NAME = "norwegianweather"
