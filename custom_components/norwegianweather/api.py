@@ -130,7 +130,7 @@ class NorwegianWeatherApiClient:
         self._session = session
         self.location = Location(place, latitude, longitude, altitude)
         self.yrdata = None
-        self.data = None
+        self.data = {}
         self.current = None
         self.expires = None
         self.last_modified = None
@@ -172,7 +172,7 @@ class NorwegianWeatherApiClient:
         if self.yrdata is not None:
             self.process_data()
             return self.data
-        return None
+        return {}
 
     async def api_wrapper(
         self, method: str, url: str, data: dict = {}, headers: dict = {}
@@ -195,6 +195,10 @@ class NorwegianWeatherApiClient:
                         f"API response: {response.status} Expires: {self.expires} Last modified: {self.last_modified} Returning existing data."
                     )
                     return self.yrdata
+                elif response.status == 403:  # 403 - forbidden
+                    _LOGGER.error("API returned code 403 forbidden.")
+                    return {}
+               
             response = await self._session.get(
                 url, headers=headers, timeout=aiohttp.ClientTimeout(total=TIMEOUT)
             )
@@ -209,8 +213,8 @@ class NorwegianWeatherApiClient:
             _LOGGER.error(f"Timeout error fetching information from API")
             _LOGGER.debug(f"Timeout {url} - {e}")
         except (KeyError, TypeError) as e:
-            _LOGGER.error(f"Error parsing information from API")
-            _LOGGER.debug(f"Timeout {url} - {e}")
+            _LOGGER.error(f"Error parsing information from API ({response})({e})")
+            _LOGGER.debug(f"Timeout {url} - {response} - {e}")
         except (aiohttp.ClientError, socket.gaierror) as e:
             _LOGGER.error(f"Error fetching information from API")
             _LOGGER.debug(f"Timeout {url} - {e}")
