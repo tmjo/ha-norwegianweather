@@ -27,7 +27,7 @@ import numpy as np
 API_NAME = "norwegianweather"
 API_ATTRIBUTION = "Data from MET Norway (www.met.no)"
 VERSION = "0.1.4"
-API_USER_AGENT = f"{API_NAME}/{VERSION} https://github.com/tmjo/ha-norwegianweather"
+API_USER_AGENT = f"{API_NAME}/{VERSION} github.com/tmjo/ha-norwegianweather"
 API_STRINGTIME = "%Y-%m-%dT%H:%M:%S%z"
 API_LANG = "nb"
 TIMEOUT = 20
@@ -163,7 +163,7 @@ class NorwegianWeatherApiClient:
                 f"Calling API to fetch new data (expired: {self.expires} now: {datetime.now(timezone.utc)})"
             )
             headers = {"User-Agent": API_USER_AGENT}
-            self.yrdata = await self.api_wrapper("get", self.get_url(), headers)
+            self.yrdata = await self.api_wrapper(method="get", url=self.get_url(),data={},headers=headers)
         else:
             _LOGGER.debug(
                 f"Data still valid, skipping call to API (expires: {self.expires} now: {datetime.now(timezone.utc)})."
