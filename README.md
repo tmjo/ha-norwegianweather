@@ -4,6 +4,8 @@
 
 This is a Home Assistant custom integration for Norwegian Weather which is interfacing an open API by the [MET Norway (The Norwegian Meteorological Institute)](https://met.no/en/), more precisely [api.met.no](https://api.met.no/).  **All data from MET Norway**. The service also provides data for geographical locations outside of Norway.
 
+OBS! Does not work with HA 2024.2.1 or 2024.2.2 due to a compatibility issue with Matplotlib, but it should be fixed from 2024.2.3 and onwards.
+
 What makes this integration different from most weather integrations in HA is that it provides much more detailed data and is meant to be used with graph cards to give weather nerds something to play with. It also provides a camera entity which serves a forecast picture that can be displayed in UI or sent as a notification to mobile phone and similar.
 
 ## Installation
