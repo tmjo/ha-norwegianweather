@@ -7,7 +7,4 @@ custom_components/__pycache__/
 *.pyc
 test/
 env/
-custom_components/norwegianweather/tmp/rawdata.json
-custom_components/norwegianweather/tmp/setup.json
-custom_components/norwegianweather/tmp/norwegianweather_Home_img.png
-custom_components/norwegianweather/tmp/norwegianweather_Home_img.png
+/custom_components/norwegianweather/tmp
