@@ -1,7 +1,7 @@
 {
   "domain": "norwegianweather",
   "name": "Norwegian Weather",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "documentation": "https://github.com/tmjo/ha-norwegianweather",
   "issue_tracker": "https://github.com/tmjo/ha-norwegianweather/issues",
   "dependencies": [],
