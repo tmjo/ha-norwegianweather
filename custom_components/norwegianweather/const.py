@@ -5,13 +5,9 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import (
     UnitOfTime,
-    UnitOfVolumetricFlux,
     UnitOfTemperature,
     UnitOfPressure,
     UnitOfLength,
-    UnitOfSpeed,
-    UnitOfLength,
-    UnitOfTime,
     UnitOfSpeed,
     UnitOfVolumetricFlux,
 )
