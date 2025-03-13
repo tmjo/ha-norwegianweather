@@ -2,6 +2,7 @@
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
+    SensorStateClass,
 )
 from homeassistant.const import (
     UnitOfTime,
@@ -10,9 +11,6 @@ from homeassistant.const import (
     UnitOfLength,
     UnitOfSpeed,
     UnitOfVolumetricFlux,
-)
-
-from homeassistant.const import (
     PERCENTAGE,
     DEGREE,
     UV_INDEX,
@@ -70,6 +68,7 @@ ENTITIES = {
         "device_class": None,
         "icon": "mdi:weather-windy-variant",
         "state_func": None,
+        
     },
     "weather_wind_speed": {
         "type": "sensor",
@@ -87,8 +86,10 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": None,
         "device_class": SensorDeviceClass.WIND_SPEED,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:weather-windy",
         "state_func": None,
+        
     },
     "weather_wind_gusts": {
         "type": "sensor",
@@ -106,6 +107,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": None,
         "device_class": SensorDeviceClass.WIND_SPEED,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:weather-windy",
         "state_func": None,
     },
@@ -126,6 +128,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": None,
         "device_class": SensorDeviceClass.WIND_SPEED,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:weather-windy",
         "state_func": None,
     },
@@ -141,7 +144,8 @@ ENTITIES = {
             "wind_speed_bf_desc",
             "wind_speed_knot",
         ],
-        "device_class": None,
+        "device_class": SensorDeviceClass.WIND_DIRECTION,
+        "state_class": SensorStateClass.MEASUREMENT,
         "units": DEGREE,
         "convert_units_func": None,
         "icon": "mdi:windsock",
@@ -174,6 +178,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": DEVICE_CLASS_TEMPERATURE,
         "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": None,
         "state_func": None,
     },
@@ -186,6 +191,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": DEVICE_CLASS_PRESSURE,
         "device_class": SensorDeviceClass.PRESSURE,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": None,
         "state_func": None,
     },
@@ -213,6 +219,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": DEVICE_CLASS_TEMPERATURE,
         "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": None,
         "state_func": None,
     },
@@ -234,6 +241,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": DEVICE_CLASS_HUMIDITY,
         "device_class": SensorDeviceClass.HUMIDITY,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": None,
         "state_func": None,
     },
@@ -260,6 +268,7 @@ ENTITIES = {
         "convert_units_func": None,
         # "device_class": None,
         "device_class": SensorDeviceClass.PRECIPITATION_INTENSITY,
+        "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:weather-rainy",
         "state_func": None,
     },

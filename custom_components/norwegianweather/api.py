@@ -170,7 +170,8 @@ class NorwegianWeatherApiClient:
             )
 
         if self.yrdata is not None:
-            self.process_data()
+            # self.process_data()
+            await self.process_data()
             return self.data
         return {}
 
@@ -222,7 +223,7 @@ class NorwegianWeatherApiClient:
             _LOGGER.error(f"Something really wrong happend!")
             _LOGGER.debug(f"Timeout {url} - {e}")
 
-    def process_data(self, maxserie=10):
+    async def process_data(self, maxserie=10):
         _LOGGER.debug("Processing data.")
         if self.yrdata is not None:
             # Add yrdata
@@ -253,14 +254,19 @@ class NorwegianWeatherApiClient:
                 intervals.append(serie.get_intervals_hourly_data())
 
             try:
-                self.process_weather_image(intervals)
+                # self.process_weather_image(intervals)
+                
+                # When calling a blocking function in your library code (https://developers.home-assistant.io/docs/asyncio_blocking_operations/)
+                loop = asyncio.get_running_loop()
+                await loop.run_in_executor(None, self.process_weather_image, intervals)
             except Exception as e:  # pylint: disable=broad-except
                 _LOGGER.warning(f"Error processing weather image: {e}")
 
-            try:
-                self.process_weather_plot(intervals)
-            except Exception as e:  # pylint: disable=broad-except
-                _LOGGER.warning(f"Error processing weather plot: {e}")
+            # try:
+            #     # self.process_weather_plot(intervals)
+            #     await self.process_weather_plot(intervals)
+            # except Exception as e:  # pylint: disable=broad-except
+            #     _LOGGER.warning(f"Error processing weather plot: {e}")
 
             self.current = self.location.get_timeserie_time_hourlydata(dt_now())
 
@@ -317,6 +323,8 @@ class NorwegianWeatherApiClient:
         newimage.close()
         images = None
 
+
+    # def process_weather_plot(self, weatherdata, filename=None):
     def process_weather_plot(self, weatherdata, filename=None):
         if filename is None:
             filename = os.path.join(self.output_dir, self.file_plot)
@@ -692,7 +700,7 @@ def weatherimage_font():
     return font
 
 
-def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
+async def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
     _LOGGER.debug("Creating plot")
     x = []
     y1 = []
