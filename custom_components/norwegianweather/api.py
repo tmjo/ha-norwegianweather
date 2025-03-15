@@ -26,7 +26,7 @@ import numpy as np
 
 API_NAME = "norwegianweather"
 API_ATTRIBUTION = "Data from MET Norway (www.met.no)"
-VERSION = "0.1.7"
+VERSION = "0.2.1"
 API_USER_AGENT = f"{API_NAME}/{VERSION} github.com/tmjo/ha-norwegianweather"
 API_STRINGTIME = "%Y-%m-%dT%H:%M:%S%z"
 API_LANG = "nb"
