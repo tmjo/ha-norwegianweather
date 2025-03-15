@@ -7,4 +7,3 @@ custom_components/__pycache__/
 *.pyc
 test/
 env/
-/custom_components/norwegianweather/tmp
