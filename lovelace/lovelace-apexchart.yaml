@@ -1,0 +1,89 @@
+type: custom:apexcharts-card
+graph_span: 2d
+span:
+  offset: +24h
+now:
+  show: true
+  label: Now
+header:
+  show: true
+  title: Weather
+  show_states: true
+  colorize_states: true
+series:
+  - entity: sensor.proxdev_weather_wind_speed
+    name: Wind
+    extend_to: false
+    show:
+      extremas: max+time
+      legend_value: false
+  - entity: sensor.proxdev_weather_main
+    name: Wind
+    extend_to: false
+    show:
+      extremas: max+time
+      legend_value: false
+      in_header: false
+    data_generator: |
+      return entity.attributes.timeseries.map((entry) => {
+        return [new Date(entry.time).getTime(), entry.wind_speed];
+      });
+  - entity: sensor.proxdev_weather_wind_gusts
+    name: Windgusts
+    extend_to: false
+    show:
+      extremas: max+time
+      legend_value: false
+  - entity: sensor.proxdev_weather_main
+    name: Windgusts
+    extend_to: false
+    show:
+      extremas: max+time
+      legend_value: false
+      in_header: false
+    data_generator: |
+      return entity.attributes.timeseries.map((entry) => {
+        return [new Date(entry.time).getTime(), entry.wind_speed_of_gust];
+      });
+  - entity: sensor.proxdev_weather_main
+    name: Precipitation
+    type: column
+    show:
+      extremas: max+time
+      legend_value: false
+      in_header: true
+    data_generator: |
+      return entity.attributes.timeseries.map((entry) => {
+        return [new Date(entry.time).getTime(), entry.precipitation_amount];
+      });
+apex_config:
+  chart:
+    zoom:
+      enabled: true
+    toolbar:
+      show: true
+      tools:
+        zoom: true
+        zoomin: false
+        zoomout: false
+        pan: false
+        reset: true
+    type: area
+    height: 300
+  stroke:
+    show: true
+    width: 2
+  legend:
+    show: true
+  yaxis:
+    min: 0
+    max: 40
+  xaxis:
+    type: datetime
+    labels:
+      datetimeFormatter:
+        month: ddd
+        day: ddd
+  tooltip:
+    fixed:
+      position: bottomLeft

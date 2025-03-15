@@ -1,0 +1,19 @@
+type: custom:plotly-graph
+entities:
+  - entity: sensor.proxdev_weather_temperature
+  - entity: sensor.proxdev_weather_wind_speed
+  - entity: sensor.proxdev_weather_wind_gusts
+hours_to_show: 48
+refresh_interval: 10
+layout:
+  xaxis:
+    rangeselector:
+      "y": 1.2
+      x: 0.8
+      buttons:
+        - count: 12
+          step: hour
+        - count: 1
+          step: day
+        - count: 7
+          step: day

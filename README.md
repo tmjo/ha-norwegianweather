@@ -1,18 +1,14 @@
 # Norwegian Weather
+
 [![Buy Me A Coffee][buymeacoffee-image]][buymeacoffee-url]
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) ![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) ![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
 
 This is a Home Assistant custom integration for Norwegian Weather which is interfacing an open API by the [MET Norway (The Norwegian Meteorological Institute)](https://met.no/en/), more precisely [api.met.no](https://api.met.no/).  **All data from MET Norway**. The service also provides data for geographical locations outside of Norway.
-
-OBS! Does not work with HA 2024.2.1 or 2024.2.2 due to a compatibility issue with Matplotlib, but it should be fixed from 2024.2.3 and onwards.
 
 What makes this integration different from most weather integrations in HA is that it provides much more detailed data and is meant to be used with graph cards to give weather nerds something to play with. It also provides a camera entity which serves a forecast picture that can be displayed in UI or sent as a notification to mobile phone and similar.
 
 ## Installation
-There are different methods of installing the custom component. HACS is by far the simplest way for unexperienced users and is recomended.
-
-### HACS installation
-The installation is currently not included in HACS as a default repo, but can be installed through HACS *by adding this repo as a custom repository*.
+[HACS](https://hacs.xyz/) is by far the easiest way to install and stay updated for this custom integrationg. This is highly recommended. The installation is currently not included in HACS as a default repo, and must be installed through HACS *by adding this repo as a custom repository*:
 
 1. Make sure you have [HACS](https://hacs.xyz/) installed in your Home Assistant environment.
 2. Go to **HACS**, select **Integrations**.
@@ -22,33 +18,24 @@ The installation is currently not included in HACS as a default repo, but can be
 6. Restart Home Assistant (a warning should be shown in log saying you're using a custom integration).
 7. Continue to the Configuration-section.
 
-
-### Manual
-1. Navigate to you home assistant configuration folder.
-2. Create a `custom_components` folder of it does not already exist, then navigate into it.
-3. Download the folder `norwegianweather` from this repo and add it into your custom_components folder.
-4. Restart Home Assistant (a warning should be shown in log saying you're using a custom integration).
-5. Continue to the Configuration-section.
-
-
-### Git installation
-1. Make sure you have git installed on your machine.
-2. Navigate to you home assistant configuration folder.
-3. Create a `custom_components` folder of it does not already exist, then navigate into it.
-4. Execute the following command: `git clone https://github.com/tmjo/ha-norwegianweather ha-norwegianweather`
-5. Run `bash links.sh`
-6. Restart Home Assistant (a warning should be shown in log saying you're using a custom integration).
-7. Continue to the Configuration-section.
+For manual installation wihtout using HACS you may either copy the `norwegian-weather` folder to your `custom_components` folder or you may install it with git. In these cases, no further details are provided as your are expected to know what you are doing. A restart of HA is required after making the changes.
 
 ## Configuration
-Configuration is done through UI/Lovelace. In Home Assistant, click on Configuration > Integrations where you add it with the + icon.
+After installation, your must configure the integration in HA. Configuration is done through UI/Lovelace. In Home Assistant, click on Settings > Devices & Services > Integrations where you add it with the + icon.
 
-You will be asked to give your location a name and to provide latitude and longitude as geographical position for the location you want to track. Finally select which sensors you would like the integration to add. More detailed description of this will be added.
+You will be asked to give your location a name and to provide latitude and longitude as geographical position for the location you want to track (your HA location is default). Finally select which sensors you would like the integration to add. There are a lot of detailed sensors, including a camera entity with an image created by Matplotlib. 
 
-Entities can be added and removed by clicking *Options* in HA integreation view at any time. It is also possible to enable more than one location by adding the integration several times.
+Entities can be added and removed by clicking *Options* in HA integration view at any time. It is also possible to enable more than one location by adding several devices.
 
 ## Usage
-Use the integration as you please, but I strongly recommend to take a look at the [Apexchart-card](https://github.com/RomRider/apexcharts-card) by Romrider - it is an excellent graph card for lovelace which also enables the possibility to show future values. This is necessary to display forecast values which are stored as attributes in the main sensor.
+The integration entities can be added to the UI as they are and you can track the history as for all entities in Home Assistant.
+
+Use the integration as you please, but I highly recommend to take a look at the [Apexchart-card](https://github.com/RomRider/apexcharts-card) by Romrider or [Plotly-card](https://github.com/dbuezas/lovelace-plotly-graph-card) by dbuezas - they are both excellent graph cards for lovelace which also enables the possibility to show future values. This is necessary to display prediction- and forecast values which are stored as attributes in the main sensor. Examples of how to configure the graphs are found here: [Apexchart example](lovelace/lovelace-apexchart.yaml) and [Plotly example](lovelace/lovelace-plotly.yaml).
+
+Example:
+![example](img/norwegianweather_example.png "example")
+
+The camera entity can also be used for UI since it provides a nice plot using Matplotlib, but I personally prefer one of the graph cards since they provide more dynamics. The camera on the other hand can be handy if you would like to send notifications with an included forecast image/plot.
 
 If you are curious about specific details and definitions, please see [api.met.no](https://api.met.no/).
 
