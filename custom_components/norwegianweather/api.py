@@ -252,19 +252,20 @@ class NorwegianWeatherApiClient:
                     break
                 i += 1
                 intervals.append(serie.get_intervals_hourly_data())
-
+            
+            loop = asyncio.get_running_loop()
             try:
-                # self.process_weather_image(intervals)
-                
+                # self.process_weather_image(intervals)  
                 # When calling a blocking function in your library code (https://developers.home-assistant.io/docs/asyncio_blocking_operations/)
-                loop = asyncio.get_running_loop()
+                
                 await loop.run_in_executor(None, self.process_weather_image, intervals)
             except Exception as e:  # pylint: disable=broad-except
                 _LOGGER.warning(f"Error processing weather image: {e}")
 
             # try:
             #     # self.process_weather_plot(intervals)
-            #     await self.process_weather_plot(intervals)
+            #     # When calling a blocking function in your library code (https://developers.home-assistant.io/docs/asyncio_blocking_operations/)
+            #     await loop.run_in_executor(None, self.process_weather_plot, intervals)
             # except Exception as e:  # pylint: disable=broad-except
             #     _LOGGER.warning(f"Error processing weather plot: {e}")
 
@@ -700,7 +701,7 @@ def weatherimage_font():
     return font
 
 
-async def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
+def plot_weatherdata(data, filename=None, show=False, location_name="LOCATION"):
     _LOGGER.debug("Creating plot")
     x = []
     y1 = []
